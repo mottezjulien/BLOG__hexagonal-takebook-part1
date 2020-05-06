@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+
+    <div>
+        <div style="float: left; width: 50%">
+            <div id="libraryListPanel">
+                <h2>Liste des bibliothèques</h2>
+                <div v-if="list.length == 0">Aucune bibliothèque</div>
+                <table v-if="list.length > 0">
+                    <tr>
+                        <td>Identifiant</td>
+                        <td>Nom</td>
+                    </tr>
+                    <tr v-for="(each) in list">
+                        <td>{{ each.id }}</td>
+                        <td>{{ each.name }}</td>
+                        <td><button @click="details(each)">Détails</button></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="libraryDetailsPanel">
+                <div v-if="isShow">
+                    <h2>Détails: {{ library.name }}</h2>
+                    <div>
+                        <h3>Etagère:</h3>
+                        <div v-if="shelves.length == 0">Aucune étagère</div>
+                        <table v-if="shelves.length > 0">
+                            <tr>
+                                <td>Identifiant</td>
+                                <td>Libellé</td>
+                                <td>Bibliothèque</td>
+                            </tr>
+                            <tr v-for="(each) in shelves">
+                                <td>{{ each.id }}</td>
+                                <td>{{ each.label }}</td>
+                                <td>{{ each.library.name }}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div>
+                        <h3>Livre:</h3>
+                        <div v-if="books.length == 0">Aucun livre</div>
+                        <table v-if="books.length > 0">
+                            <tr>
+                                <td>Identifiant</td>
+                                <td>Titre</td>
+                                <td>Auteur</td>
+                            </tr>
+                            <tr v-for="(each) in books">
+                                <td>{{ each.id }}</td>
+                                <td>{{ each.title }}</td>
+                                <td>{{ each.authorName }}</td>
+                                <td>{{ detailsBook(each) }}</td>
+                                <td>
+                                    <button v-if="each.state == 'STORED'" v-on:click="borrow(each)">Emprunter</button>
+                                    <button v-if="each.state == 'RETURNED'" v-on:click="putAway(each)">Ranger</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <button v-on:click="cancel">Annuler</button>
+                </div>
+            </div>
+        </div>
+        <div style="float: right; width: 50%">
+            <div id="borrowBookFormPanel">
+                <h2>Livres empruntés</h2>
+                <label>Emprunteur</label> <input v-model="borrower" />
+                <button v-on:click="search">Chercher</button>
+                <table v-if="books.length > 0">
+                    <tr>
+                        <td>Identifiant</td>
+                        <td>Titre</td>
+                        <td>Auteur</td>
+                    </tr>
+                    <tr v-for="(each) in books">
+                        <td>{{ each.id }}</td>
+                        <td>{{ each.title }}</td>
+                        <td>{{ each.authorName }}</td>
+                        <td>{{ detailsBook(each) }}</td>
+                        <td><button v-on:click="ret(each)">Rendre le livre</button></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
