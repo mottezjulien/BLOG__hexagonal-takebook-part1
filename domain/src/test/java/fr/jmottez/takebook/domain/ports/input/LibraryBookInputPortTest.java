@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class LibraryBookInputPortTest {
+public class LibraryBookInputPortTest {
 
     private LibraryOutputPort libraryRepository = mock(LibraryOutputPort.class);
 
